@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         )
                 .allowMainThreadQueries()
                 .build();
-        zwierzetaDataBase.zwrocZwierzeDao().wstawDoBazy(
-                new Zwierze("jeleń","lądowe",true,13)
-        );
+//        zwierzetaDataBase.zwrocZwierzeDao().wstawDoBazy(
+//                new Zwierze("jeleń","lądowe",true,13)
+//        );
     }
 }
