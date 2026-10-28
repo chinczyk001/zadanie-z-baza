@@ -2,9 +2,11 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private ZwierzetaDataBase zwierzetaDataBase;
@@ -21,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spinnerSrodowisko;
     private CheckBox checkBoxRoslino;
     private Button button;
+    private List<Zwierze> listZwierzat;
+    private ArrayAdapter<Zwierze> adapter;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,5 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 zwierzetaDataBase.zwrocZwierzeDao().wstawDoBazy(zwierze);
             }
         });
+        listView = findViewById(R.id.listView);
+        listZwierzat = zwierzetaDataBase.zwrocZwierzeDao().zwrocWszystkieZwierzeta();
+        adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, listZwierzat);
+        listView.setAdapter(adapter);
     }
 }
