@@ -46,6 +46,14 @@
         android:layout_height="wrap_content"
         android:text="Dodaj do bazy" />
 
+    <Button
+        android:id="@+id/buttonAktualizuj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="aktualizuj"
+        android:visibility="invisible"
+        />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

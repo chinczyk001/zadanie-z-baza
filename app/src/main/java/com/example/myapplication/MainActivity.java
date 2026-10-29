@@ -17,6 +17,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,10 +27,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextGatunek, editTextWiek;
     private Spinner spinnerSrodowisko;
     private CheckBox checkBoxRoslino;
-    private Button button;
+    private Button button, buttonAktualizuj;
     private List<Zwierze> listZwierzat;
     private ArrayAdapter<Zwierze> adapter;
     private ListView listView;
+    private Zwierze kliknieteZwierze;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         editTextWiek = findViewById(R.id.editTextNumber);
         spinnerSrodowisko = findViewById(R.id.spinner);
         checkBoxRoslino = findViewById(R.id.checkBox);
+        buttonAktualizuj= findViewById(R.id.buttonAktualizuj);
 
         zwierzetaDataBase = Room.databaseBuilder(
                 getApplicationContext(),
@@ -67,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                         Integer.parseInt(editTextWiek.getText().toString())
                 );
                 zwierzetaDataBase.zwrocZwierzeDao().wstawDoBazy(zwierze);
+                listZwierzat.add(zwierze);
+                adapter.notifyDataSetChanged();
             }
         });
         listView = findViewById(R.id.listView);
@@ -82,6 +88,36 @@ public class MainActivity extends AppCompatActivity {
                         listZwierzat.remove(i);
                         adapter.notifyDataSetChanged();
                         return false;
+                    }
+                }
+        );
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        kliknieteZwierze= listZwierzat.get(i);
+                        editTextGatunek.setText(kliknieteZwierze.gatunek);
+                        checkBoxRoslino.setChecked(kliknieteZwierze.czyRoslinozerne);
+                        ArrayList<String> srodowiska = new ArrayList<String>(
+                                Arrays.asList("wodne", "lądowe", "powietrzne")
+                        );
+                        spinnerSrodowisko.setSelection(srodowiska.indexOf(kliknieteZwierze.srodowiskoZycia));
+                        editTextWiek.setText(String.valueOf(kliknieteZwierze.sredniaZycia));
+                        buttonAktualizuj.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
+        buttonAktualizuj.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        kliknieteZwierze.gatunek = editTextGatunek.getText().toString();
+                        kliknieteZwierze.srodowiskoZycia = spinnerSrodowisko.getSelectedItem().toString();
+                        kliknieteZwierze.czyRoslinozerne = checkBoxRoslino.isChecked();
+                        kliknieteZwierze.sredniaZycia = Integer.parseInt(editTextWiek.getText().toString());
+                        zwierzetaDataBase.zwrocZwierzeDao().zaktualizujZwierze(kliknieteZwierze);
+                        adapter.notifyDataSetChanged();
+                        buttonAktualizuj.setVisibility(View.INVISIBLE);
                     }
                 }
         );
