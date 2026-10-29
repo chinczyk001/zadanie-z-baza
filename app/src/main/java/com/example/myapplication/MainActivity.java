@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                         zwierzetaDataBase.zwrocZwierzeDao().usunZBazy(listZwierzat.get(i));
+                        listZwierzat.remove(i);
+                        adapter.notifyDataSetChanged();
                         return false;
                     }
                 }
