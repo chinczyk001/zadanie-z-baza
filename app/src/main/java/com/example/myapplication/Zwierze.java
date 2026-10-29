@@ -30,12 +30,11 @@ public class Zwierze {
 
     @Override
     public String toString() {
-        return "Zwierze{" +
-                "id=" + id +
-                ", gatunek='" + gatunek + '\'' +
-                ", srodowiskoZycia='" + srodowiskoZycia + '\'' +
-                ", czyRoslinozerne=" + czyRoslinozerne +
-                ", sredniaZycia=" + sredniaZycia +
-                '}';
+        return
+                "gatunek :" + gatunek + "\n" +
+                "srodowiskoZycia: " + srodowiskoZycia ;
     }
 }
+
+
+

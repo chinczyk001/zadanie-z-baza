@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -72,5 +73,15 @@ public class MainActivity extends AppCompatActivity {
         listZwierzat = zwierzetaDataBase.zwrocZwierzeDao().zwrocWszystkieZwierzeta();
         adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, listZwierzat);
         listView.setAdapter(adapter);
+
+        listView.setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        zwierzetaDataBase.zwrocZwierzeDao().usunZBazy(listZwierzat.get(i));
+                        return false;
+                    }
+                }
+        );
     }
 }
